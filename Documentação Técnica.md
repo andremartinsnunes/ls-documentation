@@ -34,27 +34,24 @@ Descrever a estrutura do sistema, as camadas e as interações entre microservi�
 
 - **Comunicação entre Serviços**  
   A comunicação entre microserviços e componentes é efetuada através de:
-  - **Azure Queue Storage** — utilizado para o envio e gestão de tarefas assíncronas (OCR, análise, notificações).
-  - **HTTP** — utilizado nas interações diretas entre a **API**, o **Backoffice** e serviços externos (OCR, LLMs, notificações).  
+  - **HTTP** — utilizado nas interações diretas entre os vários repositórios e serviços externos (OCR, LLMs, notificações).  
 
-- **Infraestrutura em Nuvem**  
-  Todo o sistema está implementado na **Azure Cloud**, com os seguintes componentes principais:
-  - **Azure Web Apps** — alojamento dos serviços de API e Backoffice.  
-  - **Azure Queue Storage** — orquestração de tarefas e mensagens assíncronas.  
-  - **Azure Blob Storage** — armazenamento de ficheiros originais e resultados intermédios (OCR e extração).  
-  - **MongoDB Atlas** — base de dados central para documentos, logs, resultados e auditoria.  
-  - **Redis Cache (Azure Cache for Redis)** — ??
+- **Infraestrutura em Nuvem**
+  Todo o sistema está implementado com recurso a três infrastruturas em nuvem:
+    **Google Cloud Platform** — construção e deploy da aplicação; armazenamento de ficheiros.
+  - **Azure DevOps** — repositório de código e definição de pipelines. 
+  - **MongoDB Atlas** — base de dados central para documentos e embeddings.
 
 - **Observabilidade e Rastreabilidade**  
   A monitorização e rastreabilidade são garantidas por um conjunto de práticas e ferramentas integradas:
-  - **OpenTelemetry** — rastreamento distribuído de requests e métricas de performance.  
-  - **Azure Monitor / Application Insights** — recolha centralizada de logs e métricas.  
+  - **Looker** — rastreamento distribuído de requests e métricas de performance.  
+  - **Cloud Logging** — recolha centralizada de logs e métricas.  
 
 
 - **Diagrama Geral da Arquitetura**  
   Será incluído posteriormente um diagrama técnico que ilustra:
-  - o fluxo completo de processamento (**Upload → OCR/PdfParser/Docx → Classificação → Análise → Notificação**),  
-  - a interação entre serviços (**API**, **Workers**, **MongoDB**, **Azure Services**),  
+  - o fluxo completo de processamento,  
+  - a interação entre serviços,  
   - e os principais pontos de monitorização e rastreabilidade.
 
 
