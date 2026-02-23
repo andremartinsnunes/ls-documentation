@@ -107,72 +107,10 @@ Incluir tabela com endpoints e formato de requests/responses.
 ## 5. Componente B — Sistema de RAG
 
 ### Descrição Técnica
-- Motor de regras específicas e utilização de **LLMs** para contextualização.  
-- Integração com base de dados **MongoDB Atlas**.  
-- Estrutura e exemplos de regras (YAML/JSON/Python).  
-- Fluxo: **Classificação → Extração → Validação → Relatório.**  
-- Problemas e ajustes (ambiguidade linguística, afinação de regras, etc.).  
+- Sistema de RAG para obtenção de informação de ficheiros internos do Grupo Luz Saúde.
+- Integração com base de dados **MongoDB Atlas**. 
+- Fluxo: **Pergunta do utilizador → Pesquisa híbrida de informação relevante → Filtragem dos chunks obtidos → Construção de Prompt → Comunicação com o LLM → Resposta com base na informação obtida.**
 
----
-
-### 5.1. Estrutura de Dados — Resultado de Análise
-
-Após o processamento do documento e execução da análise de conformidade, os resultados são armazenados na base de dados **MongoDB Atlas** no seguinte formato:
-```json
-{
-  "_id": "bda1f6f9-b2a6-48e6-ba4e-932c0ef9412c",
-  "id_document": "string",
-  "type_document": "formacao",
-  "created_at": "2025-10-27T15:03:15.788+00:00",
-  "last_modified": "2025-10-27T15:03:28.881+00:00",
-  "full_text": "Plano de Formação – Ano 2024 B-22.02.01_01/24",
-  "full_text_len": 269,
-  "file": {},
-  "pages": [{}],
-  "classification": {},
-  "analysis": {
-    "in_compliance": false,
-    "confidence": 0.7,
-    "reason": "O documento apresenta um plano de formação para 2024, mas não cumpre v…",
-    "suggestions": [],
-    "metadata": {},
-    "status": []
-  }
-}
-```
-
-
-
-### 5.2. Descrição do Resultado em JSON
-
-O resultado final do processamento de cada documento é armazenado em **formato JSON**, refletindo o estado completo da operação — desde a extração de texto até à análise de conformidade.  
-
-Esta estrutura foi concebida para garantir **rastreabilidade**, **auditoria** e **interpretação automatizada** dos resultados, tanto pela API como pelo Backoffice.
-
-O JSON contém três blocos principais de informação:
-
-1. **Metadados Gerais do Documento**  
-   Inclui o identificador único (`_id`), tipo de documento (`type_document`), datas de criação e modificação, e o texto integral extraído (`full_text`).  
-   Estes campos permitem reconstituir o histórico de cada submissão e associá-la ao ficheiro original.
-
-2. **Resultados de Classificação**  
-   A chave `classification` contém o tipo de documento inferido pelo modelo de classificação (ex.: *formação*, *PPR*, *CDE*).  
-   É nesta etapa que se define o contexto do documento, que depois servirá de base à análise de compliance.
-
-3. **Resultados de Análise de Compliance**  
-   A secção `analysis` agrega toda a informação resultante da verificação das regras de conformidade:  
-   - `in_compliance`: indica se o documento cumpre (`true`/`false`) os critérios definidos;  
-   - `confidence`: nível de confiança (entre `0.0` e `1.0`) atribuído automaticamente pelo modelo de IA;  
-   - `reason`: justificação textual para o resultado obtido;  
-   - `suggestions`: lista de melhorias ou ações corretivas recomendadas para cada regra;  
-   - `metadata`: detalhes técnicos sobre o processo de análise (modelo LLM, tempo de execução, prompt usada, etc.);  
-   - `status`: histórico de estados e transições durante o processamento.  
-
-Esta estrutura JSON serve como **formato padrão de resposta da API** e é também **armazenada integralmente no MongoDB Atlas**, permitindo:  
-- auditoria e rastreabilidade completa de cada documento,  
-- e eventual reprocessamento com novas regras ou modelos de análise.  
-
----
 
 ### 6. Backoffice
 
