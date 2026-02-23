@@ -1,20 +1,19 @@
-# Documentação Técnica — MENAC  
-**Mecanismo Nacional Anticorrupção**  
-(Regime Geral de Prevenção da Corrupção)
+# Documentação Técnica — Chatbot Corporativo GenAI  
+**Grupo Luz Saúde**
 
 ---
 
 ## 1. Introdução
 
 ### Contexto
-O projeto enquadra-se no **Regime Geral de Prevenção da Corrupção (RGPC)** e tem como objetivo automatizar a **classificação e análise de conformidade de documentos institucionais**.
+O Grupo Luz Saúde reconhece a crescente importância e potencial impacto das soluções de inteligência artificial (IA) generativa no seu contexto operacional, pretendendo iniciar um projeto centrado na implementação de um chatbot corporativo, assente sobre uma Frameworkde Gen AI agnóstica eescalável. Esta solução visa disponibilizar um chatbot para os colaboradores do Grupo Luz Saúde que permita aceder a qualquer informação existente na base de conhecimento definida e explorá-la através de linguagem natural.
 
 ### Âmbito Técnico
-O sistema é composto por uma **API** e um **Backoffice**, que orquestram pipelines de **OCR**, **LLMs** e **validação de compliance**.
+A solução implementada consiste num sistema RAG para a documentação interna do Grupo Luz Saúde. Este sistema é baseado na Framework GenAI Closer, Maestro, com recurso ao LLM Gemini e implementado em Google Cloud. Os ficheiros são retirados do MS Sharepoint e transformados numa base de dados vetorial, armazenada no Mongo DB. O chatbot poderá ser acedido em qualquer browser habitual, tendo o front-end sido desenvolvido em React.
 
 ### Componentes Principais
-- **Componente A:** Classificação de Documentos  
-- **Componente B:** Análise de Compliance  
+- **Componente A:** Chatbot base baseado no Gemini 2.5 Pro  
+- **Componente B:** Sistema de RAG com a documentação interna do Grupo Luz Saúde
 
 ---
 
@@ -27,16 +26,15 @@ Descrever a estrutura do sistema, as camadas e as interações entre microservi�
 
 - **Estrutura em Camadas**  
   O sistema está organizado em múltiplas camadas lógicas e funcionais, garantindo modularidade, escalabilidade e isolamento de responsabilidades:  
-  - **Camada de Dados:** gestão e persistência em **MongoDB Atlas**, incluindo armazenamento de resultados de classificação e análise.  
-  - **Camada de Lógica e Processamento:** implementação dos pipelines de **OCR**, **Classificação** e **Análise de Compliance**, incluindo o motor de regras e integração com **LLMs (GPT-4.1)**.  
-  - **Camada de API:** expõe endpoints responsáveis pela submissão de documentos, consulta de resultados e integração com o Backoffice.  
-  - **Camada de Processamento Assíncrono:** orquestração de tarefas de OCR e análise através de **Azure Queues** e **Workers** dedicados, garantindo escalabilidade horizontal.  
-  - **Camada de Utilitários e Serviços de Apoio:** inclui módulos de logging, caching (**Redis**), formatação de respostas, validação de ficheiros e comunicação via webhooks.
+    - **Front-end:** interface web para interação com o utilizador. 
+    - **LLM:** gere a interação com o Large Language Model (LLM) Gemini, utilizado na seleção de documentos e geração da resposta.
+    - **Vector Database:** cria e armazena os embedding e metadados dos ficheiros selecionados e realiza a pesquisa híbrida (semântica + vetorial) dos documentos relevantes para a pergunta do utilizador.
+    - **Root Container:** gera a imagem do base container com todos os requisitos necessários para o projeto.
+    - **Back-end:** gere a lógica da conversa, processa as mensagens do utilizador e interage com os diferentes serviços (ex.: MongoDB, Gemini)
 
 - **Comunicação entre Serviços**  
   A comunicação entre microserviços e componentes é efetuada através de:
-  - **Azure Queue Storage** — utilizado para o envio e gestão de tarefas assíncronas (OCR, análise, notificações).  
-  - **Redis** — ??  
+  - **Azure Queue Storage** — utilizado para o envio e gestão de tarefas assíncronas (OCR, análise, notificações).
   - **HTTP** — utilizado nas interações diretas entre a **API**, o **Backoffice** e serviços externos (OCR, LLMs, notificações).  
 
 - **Infraestrutura em Nuvem**  
@@ -65,8 +63,16 @@ Descrever a estrutura do sistema, as camadas e as interações entre microservi�
 ## 3. Tech Stack
 
 ### Tecnologias Utilizadas
+> *(Slide 22 - proposta comercial)*
 
-> *(Esta secção é baseada no ficheiro TECH STACK que já existe.)*
+| Componente | Tecnologias |
+|-------------|------------|
+| Frontend | React |
+| Embeddings and RAG libraries | LangGraph, LangChain, VertexAI | 
+| Backend and Model access | FastAPI, LangChain, Ollama, Huggingface |
+| Data and Retrieval | Azure AI Search, CosmosDB, Azure Storage Accounts, MongoDB, ChromaDB, PGVector |
+| Large Language Models | Gemini |
+| Infrastructure | AzureDevOps, GitHub |
 
 ### Principais Componentes
 | Componente | Descrição |
