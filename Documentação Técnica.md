@@ -9,7 +9,7 @@
 O Grupo Luz Saúde reconhece a crescente importância e potencial impacto das soluções de inteligência artificial (IA) generativa no seu contexto operacional, pretendendo iniciar um projeto centrado na implementação de um chatbot corporativo, assente sobre uma Frameworkde Gen AI agnóstica eescalável. Esta solução visa disponibilizar um chatbot para os colaboradores do Grupo Luz Saúde que permita aceder a qualquer informação existente na base de conhecimento definida e explorá-la através de linguagem natural.
 
 ### Âmbito Técnico
-A solução implementada consiste num sistema RAG para a documentação interna do Grupo Luz Saúde. Este sistema é baseado na Framework GenAI Closer, Maestro, com recurso ao LLM Gemini e implementado em Google Cloud. Os ficheiros são retirados do MS Sharepoint e transformados numa base de dados vetorial, armazenada no Mongo DB. O chatbot poderá ser acedido em qualquer browser habitual, tendo o front-end sido desenvolvido em React.
+A solução implementada consiste num sistema RAG para a documentação interna do Grupo Luz Saúde. Este sistema é baseado na Framework GenAI Closer, Maestro, com recurso ao LLM Gemini e implementado em Google Cloud. Os ficheiros são armazenados num bucket no GCP, de onde são retirados e transformados numa base de dados vetorial, armazenada no Mongo DB. O chatbot poderá ser acedido em qualquer browser habitual, tendo o front-end sido desenvolvido em React.
 
 ### Componentes Principais
 - **Componente A:** Chatbot base baseado no Gemini 2.5 Pro  
@@ -96,44 +96,12 @@ Incluir tabela com endpoints e formato de requests/responses.
 - Estrutura de dados e persistência  
 
 ### Principais Desafios e Evolução
-Inicialmente, verificou-se dificuldades na leitura de determinados documentos devido a:
-- utilização de **fontes personalizadas** nos PDFs (ainda pode ocorrer se o OCR não reconhecer a fonte),  
-- documentos com texto não selecionável (digitalizados).  
-- Casos recorrentes de falha/`classification = null` foram identificados em documentos que exigem credenciais para abrir (conteúdo inacessível ao OCR) ou que contêm páginas em branco; ao validar incidentes, verificar primeiro se o ficheiro está protegido ou vazio antes de reprocessar.
-- Documentos muito extensos (~200/300 páginas) podem demorar substancialmente mais tempo; em alguns casos só se obtém a classificação dentro da janela de execução e a análise fica `null` por timeout, exigindo reprocessamento ou aumento de tempo limite.
-
-Para resolver estas limitações, o pipeline foi ajustado de forma a (cobrindo a maioria dos casos; o que restar depende tipicamente do lado do utilizador, como credenciais ou ficheiros vazios):
-- efetuar **múltiplas chamadas ao OCR** com diferentes configurações linguísticas e de precisão,  
-- aplicar **pré-processamento de imagem** para aumentar a taxa de sucesso.  
-
-Estas melhorias resultaram numa **maior fiabilidade da leitura e classificação**,  
-mas também num **aumento do número de chamadas OCR**, o que implica **custos superiores de processamento** em comparação com a versão inicial.
 
 ---
 
 ## 4.1. Tipologia de Documentos
 
-O sistema foi concebido para **classificar e analisar automaticamente diferentes tipos de documentos institucionais** no âmbito do **Regime Geral de Prevenção da Corrupção (RGPC)**.  
-
-Cada tipologia segue regras e critérios próprios de conformidade, definidos pelo **Mecanismo Nacional Anticorrupção (MENAC)**.  
-
 ### Tipos de Documentos Suportados
-
-| Código | Designação Completa | Descrição |
-|---------|--------------------|------------|
-| **PPR** | Plano de Prevenção de Riscos de Corrupção e Infrações Conexas | Documento estratégico que define riscos identificados e medidas preventivas a adotar pela entidade. |
-| **CDE** | Código de Conduta | Define princípios éticos, comportamentais e de integridade aplicáveis a todos os colaboradores e dirigentes. |
-| **Formação** | Formação e Comunicação | Documento que descreve as ações de formação e comunicação interna relacionadas com ética e anticorrupção. |
-| **RL-CDE** | Relatório do Código de Conduta | Relatório anual que demonstra o cumprimento, atualização e comunicação do Código de Conduta. |
-| **RL-PPR-INTERCALAR** | Relatório intercalar do Plano de Prevenção de Riscos, focado em avaliação pontual (abril/outubro), medidas implementadas e riscos elevados/máximos. |
-| **RL-PPR-ANUAL** | Relatório anual consolidado de execução do PPR, com avaliação global do ano civil, síntese de medidas, atualização de matriz de risco e propostas de revisão. |
-
-### Observações
-- Cada documento é classificado de forma **automática** com base no conteúdo textual extraído e analisado pelo **modelo de classificação**.  
-- A classificação serve como **etapa prévia obrigatória** para o módulo de **análise de conformidade**, que aplica as regras específicas de cada tipologia.  
-
----------?????-------------------
-- As tipologias estão **parametrizadas** na base de dados e podem ser **atualizadas** via configuração sem alterar o código da aplicação.  
 
 ## 4.2. Fluxo End-to-End (Resumo Operacional)
 
