@@ -71,29 +71,16 @@ Descrever a estrutura do sistema, as camadas e as interações entre microservi�
 | Large Language Models | Gemini |
 | Infrastructure | AzureDevOps, GitHub |
 
-### Principais Componentes
-| Componente | Descrição |
-|-------------|------------|
-| Web API | Recebe documentos e inicia o processamento |
-| Document Validator | Valida o tipo, formato e permissões |
-| Content Extractor | Extrai texto via OCR, parser de PDF ou leitura direta de ficheiros DOCX (utilizando a biblioteca **docx2txt**) |
-| Document Classifier | Classifica o documento com base no conteúdo textual |
-| Document Analyzer | Analisa o conteúdo baseado em regras específicas de conformidade e contexto |
-| Notification Service | Envia resultados via webhook |
-| Dashboard | Interface de monitorização |
-
 ### Comunicação entre Microserviços
 Incluir tabela com endpoints e formato de requests/responses.
 
 ---
 
-## 4. Componente A — Classificação de Documentos
+## 4. Componente A — Chatbot
 
 ### Descrição Técnica
-- Fluxo: **Upload → Validação → OCR/PDFParser/Docx → Classificação**  
-- Ferramentas: **Azure Vision**, **LangChain**, **GPT-4.1**, etc.  
-- Otimização do OCR: limitação de chamadas e cache de resultados  
-- Estrutura de dados e persistência  
+- Fluxo: **Pergunta do utilizador → Construção de prompt → Comunicação com o LLM → Resposta**  
+- Ferramentas: **GCP**, **Vertex AI**, **Gemini 2.5 Pro**, etc.
 
 ### Principais Desafios e Evolução
 
@@ -105,33 +92,19 @@ Incluir tabela com endpoints e formato de requests/responses.
 
 ## 4.2. Fluxo End-to-End (Resumo Operacional)
 
-1) API recebe o ficheiro → valida tipo/tamanho → rejeita PDFs protegidos por password ou ficheiros vazios.  
-2) Extração: OCR/PDF parser/Docx → se falhar por ficheiro protegido ou página em branco, sinalizar e não seguir para classificação.  
-3) Classificação (LLM): usa prompt configurado em `prompts/classifier/variables.yaml`.  
-4) Análise de compliance (LLM): baseada no tipo inferido, usando `prompts/analyzer_*/variables.yaml`.  
-5) Persistência: resultados guardados em MongoDB (`classification`, `analysis`, `full_text`).  
-6) Notificação.  
-Timeouts/retries: documentos longos (200/300+ páginas) podem exceder o tempo de análise; a classificação pode concluir e a análise ficar `null`. Reprocessar ou aumentar o timeout.
+1) O utilizador faz uma pergunta no front-end.
+2) É construída uma prompt para envio para o LLM com indicações para a reposta e histórico de conversas.
+3) Comunicação com o LLM para obtenção de resposta. 
+4) Envio da resposta ao utilizador através do front-end.
 
-## 4.3. Validação de Ficheiros e Erros Comuns
-
-- PDFs com password/credenciais: OCR não lê → classificação/análise `null`; pedir ficheiro sem proteção.  
-- Limite de páginas: documentos muito extensos podem exigir reprocessamento; monitorizar tempos.  
-- Formatos suportados: PDF/DOCX; validar mimetype e tamanho antes de enviar ao pipeline.
-
-## 4.4. Gestão de Timeouts para Documentos Longos
-
-- Tempo limite atual: <preencher valor> para extração/classificação/análise.  
-- Sintoma: classificação preenchida e análise `null` por timeout.  
-- Mitigação: reprocessar com mais tempo, dividir o documento ou pedir versão reduzida ao utilizador.
-
-## 4.5. YAMLs de Prompts — Carregamento e Extensão
-- Origem: `prompts/classifier/variables.yaml` e `prompts/analyzer_*/variables.yaml`.  
-- Como o código usa: módulos Python leem estes YAMLs para montar o prompt e validar o formato de resposta.  
-- Como estender: adicionar categorias/critérios mantendo as chaves existentes (`categories_description`, `response_format`, `regra_decisao`, etc.) e alinhar com o que está parametrizado na base de dados.
+## 4.3. Ficheiros de Prompts — Carregamento e Extensão
+- Origem: `\LS-chatbot-backend\app\orchestrators\resources\prompts`.
+- Ficheiros: `prompt_rag.xml` e `prompt_relevant_docs.xml`
+- Como o código usa: módulos Python leem estes ficheiros para montar o prompt e validar o formato de resposta.  
+- Como estender: ?
 
 
-## 5. Componente B — Análise de Compliance
+## 5. Componente B — Sistema de RAG
 
 ### Descrição Técnica
 - Motor de regras específicas e utilização de **LLMs** para contextualização.  
