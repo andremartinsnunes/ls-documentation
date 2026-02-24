@@ -126,30 +126,21 @@ Incluir tabela com endpoints e formato de requests/responses.
 
 Os ficheiros são guardados em duas bases de dados distintas, com objetivos diferentes.
   - **GCP Bucket:** os documentos são inicialmente guardados num bucket do Google Cloud Platform, que é gerido pela equipa do Grupo Luz Saúde.
-  - **MongoDB:** 
+  - **MongoDB:** os documentos no bucket do GCP são divididos em chunks de 500 palavras com overlap de 100 palavras. Os chunks são guardados na base de dados do Mongo DB como texto e como vetor após o processo de embedding.
 
 ### Principais Desafios e Evolução
 
-
-### 6. Backoffice
-
-### Descrição Técnica
-- Estrutura do módulo `service_backoffice/`  
-- Funcionalidades principais
-- Comunicação com a API  
-- Segurança e permissões  
-
 ---
 
-## 7. Infraestrutura e Implementação (Not done yet)
+## 6. Infraestrutura e Implementação (Not done yet)
 
 ### Descrição Técnica
 - **Dockerização** e orquestração dos serviços  
-- **Azure Pipelines / DevOps** para CI/CD  
+- **Azure DevOps** para CI/CD  
 - Gestão de **variáveis de ambiente e configurações**  
 - Monitorização e logs distribuídos  
 
-### 7.1. Pipelines e YAMLs no diretório `azure/`
+### 6.1. Pipelines e YAMLs no diretório `azure/`
 - O diretório `azure/` contém os ficheiros de pipeline que constroem e publicam cada serviço:  
   - `service-api.yml` — build/push da API e publicação em Azure App Service/Functions.  
   - `service-analyzer.yml` — pipeline do motor de análise/compliance.  
@@ -159,18 +150,13 @@ Os ficheiros são guardados em duas bases de dados distintas, com objetivos dife
 - Cada YAML segue o mesmo padrão: o bloco `variables` define o Dockerfile a usar, o registry, grupo de recursos, subscrição, nome da app e `tag`; as tarefas seguintes fazem build/push da imagem e deploy no serviço Azure correspondente, atualizando também as `appSettings` (ex.: `ENVIRONMENT`, strings de conexão, endpoints de serviços internos).
 - Criação/troca de ambientes (dev/qa/prod) é feita alterando apenas os valores das variáveis nesses ficheiros (ou via variable groups/templates no Azure DevOps): `azResourceGroupName`, `azSubscription`, `azAppName`, `containerRegistry`, `imageRepository`, `env`, conexões a Mongo/Redis/OpenAI/OCR, URLs internas, etc. O pipeline permanece igual, apenas com valores diferentes para apontar para o ambiente desejado.
 
-### 7.2. YAMLs de módulos e prompts (LLM)
+### 6.2. YAMLs de módulos e prompts (LLM)
 - O diretório `prompts/` contém os YAML usados pelos módulos de classificação e análise em runtime; cada subpasta representa um fluxo (`classifier`, `analyzer_plano`, `analyzer_formacao`, `analyzer_codigo`, etc.).  
 - Cada `variables.yaml` define o contexto enviado ao LLM: categorias, formato de resposta esperado e regras de decisão/critério. Exemplos: o classificador descreve cada categoria e o JSON de saída; o analyzer lista critérios de compliance e a regra global (`regra_decisao`) que determina `in_compliance`.
 - Para ajustar lógica (novas categorias, critérios ou campos de saída), edite apenas estes YAMLs mantendo as mesmas chaves esperadas pelo código Python que monta os prompts dinamicamente.
 ---
 
-## 8. Testes e Qualidade
-
-### Descrição Técnica
-- Estrutura de testes (`tests/`)  
-- Ferramentas: `pytest`, `coverage`  
-- Tipos de teste: unitário, integração, carga  
-- Métricas e resultados esperados  
+## 7. Testes e Qualidade
+ 
 
 --- 
