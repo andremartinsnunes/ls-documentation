@@ -95,9 +95,7 @@ Incluir tabela com endpoints e formato de requests/responses.
 ## 4.2. Ficheiros de Prompts — Carregamento e Extensão
 - Origem: `\LS-chatbot-backend\app\orchestrators\resources\prompts`.
 - Ficheiros: `prompt_rag.xml` e `prompt_relevant_docs.xml`
-- Como o código usa: módulos Python leem estes ficheiros para montar o prompt e validar o formato de resposta.  
-- Como estender: ?
-
+- Como o código usa: módulos Python leem estes ficheiros para montar o prompt e validar o formato de resposta.
 
 ## 5. Componente B — Sistema de RAG
 
@@ -106,7 +104,16 @@ Incluir tabela com endpoints e formato de requests/responses.
 - Integração com base de dados **MongoDB Atlas**. 
 - Fluxo: **Pergunta do utilizador → Pesquisa híbrida de informação relevante → Filtragem dos chunks obtidos → Construção de Prompt → Comunicação com o LLM → Resposta com base na informação obtida.**
 
-## 5.1. Tipologia de Documentos
+## 5.1. Fluxo End-to-End (Resumo Operacional)
+
+1) O utilizador faz uma pergunta no front-end.
+2) Com base na pergunta, é feita uma pesquisa híbrida (vetorial + semântica) na base de dados do MongoDB para encontrar os chunks de documentos com informação relevante à pergunta.
+3) Os chunks selecionados são avaliados com recurso a um LLM, que faz uma segunda seleção dos mesmos.
+2) É construída uma prompt para envio para o LLM com instruções para a reposta, a pergunta do utilizador, histórico de conversas e os chunks selecionados.
+3) Comunicação com o LLM para obtenção de resposta. 
+4) Envio da resposta ao utilizador através do front-end.
+
+## 5.2. Tipologia de Documentos
 
 ### Tipos de Documentos Suportados
 
@@ -114,6 +121,12 @@ Incluir tabela com endpoints e formato de requests/responses.
 2) docx
 3) pptx
 4) csv
+
+### Bases de dados
+
+Os ficheiros são guardados em duas bases de dados distintas, com objetivos diferentes.
+  - **GCP Bucket:** os documentos são inicialmente guardados num bucket do Google Cloud Platform, que é gerido pela equipa do Grupo Luz Saúde.
+  - **MongoDB:** 
 
 ### Principais Desafios e Evolução
 
