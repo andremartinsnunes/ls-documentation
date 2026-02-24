@@ -138,22 +138,54 @@ A aplicação está desenvolvida com base em cinco repositórios separados que c
 
 ### 6.1. Front-end
 
-#### Descrição
-
-Este projeto é o frontend React de um sistema de chatbot inteligente, desenvolvido para interação com utilizadores e integração com modelos de linguagem avançados (ex: OpenAI GPT). Oferece uma interface moderna, responsiva e rica em funcionalidades, incluindo suporte a múltiplas sessões, visualização de documentos, autenticação, e integração com backend para respostas contextuais e geração de sugestões.
-
----
+Este projeto utiliza o front-end desenvolvido em React de um sistema de chatbot inteligente, desenvolvido para interação com utilizadores e integração com modelos de linguagem avançados (Gemini). Oferece uma interface moderna, responsiva e rica em funcionalidades, incluindo suporte a múltiplas sessões, visualização de documentos, autenticação, e integração com backend para respostas contextuais e geração de sugestões.
 
 #### Funcionalidades Principais
 
 - **Interface de Chat Moderna:** Experiência de conversação fluida, com suporte a múltiplas sessões e histórico.
 - **Visualização de Documentos:** Permite visualizar PDFs, imagens e documentos Office diretamente na interface.
-- **Sugestões Inteligentes:** Geração de perguntas sugeridas com base no contexto da conversa.
-- **Autenticação de Utilizador:** Integração com EasyAuth para autenticação e personalização da experiência.
+- **Autenticação de Utilizador:** Integração com EasyAuth (?) para autenticação e personalização da experiência.
 - **Streaming de Respostas:** Respostas do modelo podem ser apresentadas em tempo real (simulação de streaming).
 - **Suporte a Voz:** Possibilidade de ativar síntese de voz para respostas.
 - **Gestão de Sessões:** Criação, remoção, renomeação e seleção de sessões de chat.
 - **Integração Backend:** Comunicação com API backend para obtenção de respostas, citações e sugestões.
+
+### 6.2. Back-end
+
+Este repositório é o serviço de back-end. O back-end é responsável pela lógica de conversa, por processar as mensagens do utilizador e pela comunicação entre os vários serviços (MongoDB, Gemini e diferentes repositórios).
+
+#### Funcionalidades Principais
+
+- **Endpoints**: Definidos no ficheiro `openapi_app.py`, são responsáveis pelos pedidos do utilizador.
+- **Orchestrator Agents**: Implementados nos ficheiros `mongodb_gemini.py`, `relevant_docs.py` e `blob_url_retrieval.py`, são responsáveis pelo fluxo de conversa, pela seleção de documentos relevantes e pela obtenção do URL correspondente aos documentos selecionados, respetivamente.
+- **Utilities**: Várias funções e classes auxiliares estão definidas na pasta `utils`.
+- **Resources**: Ficheiros JSON e XML usados para prompts e card templates.
+- **CI/CD**: Ficheiros de configuração para integração e deploy contínuos.
+
+### 6.3. Vector DB
+
+Este repositório foi construído para interagir com a base de dados vetorial do chatbot. Inclui várias componentes para processar documentos, embedding e funcionalidades de pesquisa vetorial, que estão incorporadas com o MongoDB e o Google Cloud Storage.
+
+#### Funcionalidades Principais
+
+- **Endpoints**: Definidos no ficheiro `openapi_app.py`. Responsáveis por adicionar, selecionar, listar e apagar documentos e chunks de documentos do MongoDB e pela criação de search indices. 
+- **Orchestrator Agents**: Implementados nos ficheiros `add_documents_mongo.py` e `delete_chunks.py`, são responsáveis por adicionar e apagar os ficheiros da base de dados.
+- **Utilities**: Várias funções e classes auxiliares estão definidas na pasta `utils`.
+- **CI/CD**: Ficheiros de configuração para integração e deploy contínuos.
+
+### 6.4. LLM
+
+This repository encapsulates a microservice for a chatbot using a Large Language Model (LLM) named Gemini. It is structured to handle API requests, process them using the LLM, and deploy the service using Docker and Google Cloud Build.
+
+#### Funcionalidades Principais
+
+- **Endpoints**:
+- **LLM Orchestrator**:
+- **Dockerfile**:
+
+### 6.5. Root-container
+
+The base-container repository generates the base container image with all the requirements needed for Grupo Luz Saúde GenAI project. The project uses Google Cloud Build to automate the build and deployment process.
 
 ---
 
