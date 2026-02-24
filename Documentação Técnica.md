@@ -6,7 +6,7 @@
 ## 1. Introdução
 
 ### Contexto
-O Grupo Luz Saúde reconhece a crescente importância e potencial impacto das soluções de inteligência artificial (IA) generativa no seu contexto operacional, pretendendo iniciar um projeto centrado na implementação de um chatbot corporativo, assente sobre uma Frameworkde Gen AI agnóstica eescalável. Esta solução visa disponibilizar um chatbot para os colaboradores do Grupo Luz Saúde que permita aceder a qualquer informação existente na base de conhecimento definida e explorá-la através de linguagem natural.
+O Grupo Luz Saúde reconhece a crescente importância e potencial impacto das soluções de inteligência artificial (IA) generativa no seu contexto operacional, pretendendo iniciar um projeto centrado na implementação de um chatbot corporativo, assente sobre uma Framework de Gen AI agnóstica eescalável. Esta solução visa disponibilizar um chatbot para os colaboradores do Grupo Luz Saúde que permita aceder a qualquer informação existente na base de conhecimento definida e explorá-la através de linguagem natural.
 
 ### Âmbito Técnico
 A solução implementada consiste num sistema RAG para a documentação interna do Grupo Luz Saúde. Este sistema é baseado na Framework GenAI Closer, Maestro, com recurso ao LLM Gemini e implementado em Google Cloud. Os ficheiros são armazenados num bucket no GCP, de onde são retirados e transformados numa base de dados vetorial, armazenada no Mongo DB. O chatbot poderá ser acedido em qualquer browser habitual, tendo o front-end sido desenvolvido em React.
