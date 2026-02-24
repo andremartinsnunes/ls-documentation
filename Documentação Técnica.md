@@ -60,7 +60,6 @@ Descrever a estrutura do sistema, as camadas e as interações entre microservi�
 ## 3. Tech Stack
 
 ### Tecnologias Utilizadas
-> *(Slide 22 - proposta comercial)*
 
 | Componente | Tecnologias |
 |-------------|------------|
@@ -86,18 +85,14 @@ Incluir tabela com endpoints e formato de requests/responses.
 
 ---
 
-## 4.1. Tipologia de Documentos
-
-### Tipos de Documentos Suportados
-
-## 4.2. Fluxo End-to-End (Resumo Operacional)
+## 4.1. Fluxo End-to-End (Resumo Operacional)
 
 1) O utilizador faz uma pergunta no front-end.
 2) É construída uma prompt para envio para o LLM com indicações para a reposta e histórico de conversas.
 3) Comunicação com o LLM para obtenção de resposta. 
 4) Envio da resposta ao utilizador através do front-end.
 
-## 4.3. Ficheiros de Prompts — Carregamento e Extensão
+## 4.2. Ficheiros de Prompts — Carregamento e Extensão
 - Origem: `\LS-chatbot-backend\app\orchestrators\resources\prompts`.
 - Ficheiros: `prompt_rag.xml` e `prompt_relevant_docs.xml`
 - Como o código usa: módulos Python leem estes ficheiros para montar o prompt e validar o formato de resposta.  
@@ -110,6 +105,17 @@ Incluir tabela com endpoints e formato de requests/responses.
 - Sistema de RAG para obtenção de informação de ficheiros internos do Grupo Luz Saúde.
 - Integração com base de dados **MongoDB Atlas**. 
 - Fluxo: **Pergunta do utilizador → Pesquisa híbrida de informação relevante → Filtragem dos chunks obtidos → Construção de Prompt → Comunicação com o LLM → Resposta com base na informação obtida.**
+
+## 5.1. Tipologia de Documentos
+
+### Tipos de Documentos Suportados
+
+1) PDF
+2) docx
+3) pptx
+4) csv
+
+### Principais Desafios e Evolução
 
 
 ### 6. Backoffice
