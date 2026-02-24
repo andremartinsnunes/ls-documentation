@@ -136,13 +136,13 @@ Os ficheiros são guardados em duas bases de dados distintas, com objetivos dife
 
 ## 6. Backoffice
 
-A aplicação está desenvolvida com base em cinco repositórios separados que comunicam entre si através de endpoints. Em baixo está uma descrição de cada repositório.
+A aplicação está desenvolvida com base em cinco repositórios separados que comunicam entre si através de endpoints. Em baixo, está uma descrição de cada repositório.
 
 ### 6.1. Front-end
 
 Este projeto utiliza o front-end desenvolvido em React de um sistema de chatbot inteligente, desenvolvido para interação com utilizadores e integração com modelos de linguagem avançados (Gemini). Oferece uma interface moderna, responsiva e rica em funcionalidades, incluindo suporte a múltiplas sessões, visualização de documentos, autenticação, e integração com backend para respostas contextuais e geração de sugestões.
 
-#### Funcionalidades Principais
+#### Funcionalidades Principais:
 
 - **Interface de Chat Moderna:** Experiência de conversação fluida, com suporte a múltiplas sessões e histórico.
 - **Visualização de Documentos:** Permite visualizar PDFs, imagens e documentos Office diretamente na interface.
@@ -154,9 +154,9 @@ Este projeto utiliza o front-end desenvolvido em React de um sistema de chatbot 
 
 ### 6.2. Back-end
 
-Este repositório é o serviço de back-end. O back-end é responsável pela lógica de conversa, por processar as mensagens do utilizador e pela comunicação entre os vários serviços (MongoDB, Gemini e diferentes repositórios).
+Este repositório corresponde ao serviço de back-end. O back-end é responsável pela lógica de conversa, por processar as mensagens do utilizador e pela comunicação entre os vários serviços (MongoDB, Gemini e diferentes repositórios).
 
-#### Funcionalidades Principais
+#### Funcionalidades Principais:
 
 - **Endpoints**: Definidos no ficheiro `openapi_app.py`, são responsáveis pelos pedidos do utilizador.
 - **Orchestrator Agents**: Implementados nos ficheiros `mongodb_gemini.py`, `relevant_docs.py` e `blob_url_retrieval.py`, são responsáveis pelo fluxo de conversa, pela seleção de documentos relevantes e pela obtenção do URL correspondente aos documentos selecionados, respetivamente.
@@ -168,7 +168,7 @@ Este repositório é o serviço de back-end. O back-end é responsável pela ló
 
 Este repositório foi construído para interagir com a base de dados vetorial do chatbot. Inclui várias componentes para processar documentos, embedding e funcionalidades de pesquisa vetorial, que estão incorporadas com o MongoDB e o Google Cloud Storage.
 
-#### Funcionalidades Principais
+#### Funcionalidades Principais:
 
 - **Endpoints**: Definidos no ficheiro `openapi_app.py`. Responsáveis por adicionar, selecionar, listar e apagar documentos e chunks de documentos do MongoDB e pela criação de search indices. 
 - **Orchestrator Agents**: Implementados nos ficheiros `add_documents_mongo.py` e `delete_chunks.py`, são responsáveis por adicionar e apagar os ficheiros da base de dados.
@@ -177,9 +177,9 @@ Este repositório foi construído para interagir com a base de dados vetorial do
 
 ### 6.4. LLM
 
-Este repositório contém o microserviço para o uso de um Large Language Model (LLM). Neste projeto, foi usado o Gemini. O repositório recebe um pedido de mensagem, processa-o com recurso ao LLM e envia a resposta de volta ao backend.
+Este repositório contém o microserviço para o uso de um Large Language Model (LLM). Neste projeto, foi utilizado o Gemini. O repositório recebe um pedido de mensagem, processa-o com recurso ao LLM e envia a resposta de volta ao backend.
 
-#### Funcionalidades Principais
+#### Funcionalidades Principais:
 
 - **Endpoints**: Endpoint que recebe uma mensagem, comunica com o LLM e devolve a resposta. 
 - **LLM Orchestrator**: Completion Message Function - usa o Vertex AI para comunicar com o LMM Gemini.
