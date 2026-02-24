@@ -132,7 +132,32 @@ Os ficheiros são guardados em duas bases de dados distintas, com objetivos dife
 
 ---
 
-## 6. Infraestrutura e Implementação (Not done yet)
+## 6. Backoffice
+
+A aplicação está desenvolvida com base em cinco repositórios separados que comunicam entre si através de endpoints. Em baixo está uma descrição de cada repositório.
+
+### 6.1. Front-end
+
+#### Descrição
+
+Este projeto é o frontend React de um sistema de chatbot inteligente, desenvolvido para interação com utilizadores e integração com modelos de linguagem avançados (ex: OpenAI GPT). Oferece uma interface moderna, responsiva e rica em funcionalidades, incluindo suporte a múltiplas sessões, visualização de documentos, autenticação, e integração com backend para respostas contextuais e geração de sugestões.
+
+---
+
+#### Funcionalidades Principais
+
+- **Interface de Chat Moderna:** Experiência de conversação fluida, com suporte a múltiplas sessões e histórico.
+- **Visualização de Documentos:** Permite visualizar PDFs, imagens e documentos Office diretamente na interface.
+- **Sugestões Inteligentes:** Geração de perguntas sugeridas com base no contexto da conversa.
+- **Autenticação de Utilizador:** Integração com EasyAuth para autenticação e personalização da experiência.
+- **Streaming de Respostas:** Respostas do modelo podem ser apresentadas em tempo real (simulação de streaming).
+- **Suporte a Voz:** Possibilidade de ativar síntese de voz para respostas.
+- **Gestão de Sessões:** Criação, remoção, renomeação e seleção de sessões de chat.
+- **Integração Backend:** Comunicação com API backend para obtenção de respostas, citações e sugestões.
+
+---
+
+## 7. Infraestrutura e Implementação (Not done yet)
 
 ### Descrição Técnica
 - **Dockerização** e orquestração dos serviços  
@@ -140,7 +165,7 @@ Os ficheiros são guardados em duas bases de dados distintas, com objetivos dife
 - Gestão de **variáveis de ambiente e configurações**  
 - Monitorização e logs distribuídos  
 
-### 6.1. Pipelines e YAMLs no diretório `azure/`
+### 7.1. Pipelines e YAMLs no diretório `azure/`
 - O diretório `azure/` contém os ficheiros de pipeline que constroem e publicam cada serviço:  
   - `service-api.yml` — build/push da API e publicação em Azure App Service/Functions.  
   - `service-analyzer.yml` — pipeline do motor de análise/compliance.  
@@ -150,13 +175,13 @@ Os ficheiros são guardados em duas bases de dados distintas, com objetivos dife
 - Cada YAML segue o mesmo padrão: o bloco `variables` define o Dockerfile a usar, o registry, grupo de recursos, subscrição, nome da app e `tag`; as tarefas seguintes fazem build/push da imagem e deploy no serviço Azure correspondente, atualizando também as `appSettings` (ex.: `ENVIRONMENT`, strings de conexão, endpoints de serviços internos).
 - Criação/troca de ambientes (dev/qa/prod) é feita alterando apenas os valores das variáveis nesses ficheiros (ou via variable groups/templates no Azure DevOps): `azResourceGroupName`, `azSubscription`, `azAppName`, `containerRegistry`, `imageRepository`, `env`, conexões a Mongo/Redis/OpenAI/OCR, URLs internas, etc. O pipeline permanece igual, apenas com valores diferentes para apontar para o ambiente desejado.
 
-### 6.2. YAMLs de módulos e prompts (LLM)
+### 7.2. YAMLs de módulos e prompts (LLM)
 - O diretório `prompts/` contém os YAML usados pelos módulos de classificação e análise em runtime; cada subpasta representa um fluxo (`classifier`, `analyzer_plano`, `analyzer_formacao`, `analyzer_codigo`, etc.).  
 - Cada `variables.yaml` define o contexto enviado ao LLM: categorias, formato de resposta esperado e regras de decisão/critério. Exemplos: o classificador descreve cada categoria e o JSON de saída; o analyzer lista critérios de compliance e a regra global (`regra_decisao`) que determina `in_compliance`.
 - Para ajustar lógica (novas categorias, critérios ou campos de saída), edite apenas estes YAMLs mantendo as mesmas chaves esperadas pelo código Python que monta os prompts dinamicamente.
 ---
 
-## 7. Testes e Qualidade
+## 8. Testes e Qualidade
  
 
 --- 
