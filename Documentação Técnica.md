@@ -175,17 +175,17 @@ Este repositório foi construído para interagir com a base de dados vetorial do
 
 ### 6.4. LLM
 
-This repository encapsulates a microservice for a chatbot using a Large Language Model (LLM) named Gemini. It is structured to handle API requests, process them using the LLM, and deploy the service using Docker and Google Cloud Build.
+Este repositório contém o microserviço para o uso de um Large Language Model (LLM). Neste projeto, foi usado o Gemini. O repositório recebe um pedido de mensagem, processa-o com recurso ao LLM e envia a resposta de volta ao backend.
 
 #### Funcionalidades Principais
 
-- **Endpoints**:
-- **LLM Orchestrator**:
-- **Dockerfile**:
+- **Endpoints**: Endpoint que recebe uma mensagem, comunica com o LLM e devolve a resposta. 
+- **LLM Orchestrator**: Completion Message Function - usa o Vertex AI para comunicar com o LMM Gemini.
+- **CI/CD**: Ficheiros de configuração para integração e deploy contínuos.
 
 ### 6.5. Root-container
 
-The base-container repository generates the base container image with all the requirements needed for Grupo Luz Saúde GenAI project. The project uses Google Cloud Build to automate the build and deployment process.
+O repositório root-container gera a imagem do base container com todos os requisitos necessários para o projeto. Os processos de build e deployment são automatizados com recusrso ao Google Cloud Build.
 
 ---
 
