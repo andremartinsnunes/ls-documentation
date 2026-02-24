@@ -109,9 +109,9 @@ Incluir tabela com endpoints e formato de requests/responses.
 1) O utilizador faz uma pergunta no front-end.
 2) Com base na pergunta, é feita uma pesquisa híbrida (vetorial + semântica) na base de dados do MongoDB para encontrar os chunks de documentos com informação relevante à pergunta.
 3) Os chunks selecionados são avaliados com recurso a um LLM, que faz uma segunda seleção dos mesmos.
-2) É construída uma prompt para envio para o LLM com instruções para a reposta, a pergunta do utilizador, histórico de conversas e os chunks selecionados.
-3) Comunicação com o LLM para obtenção de resposta. 
-4) Envio da resposta ao utilizador através do front-end.
+4) É construída uma prompt para envio para o LLM com instruções para a reposta, a pergunta do utilizador, histórico de conversas e os chunks selecionados.
+5) Comunicação com o LLM para obtenção de resposta. 
+6) Envio da resposta ao utilizador através do front-end.
 
 ## 5.2. Tipologia de Documentos
 
