@@ -83,7 +83,7 @@ Incluir tabela com endpoints e formato de requests/responses.
 
 ### Principais Desafios e Evolução
 
----
+
 
 ## 4.1. Fluxo End-to-End (Resumo Operacional)
 
@@ -96,6 +96,8 @@ Incluir tabela com endpoints e formato de requests/responses.
 - Origem: `\LS-chatbot-backend\app\orchestrators\resources\prompts`.
 - Ficheiros: `prompt_rag.xml` e `prompt_relevant_docs.xml`
 - Como o código usa: módulos Python leem estes ficheiros para montar o prompt e validar o formato de resposta.
+
+---
 
 ## 5. Componente B — Sistema de RAG
 
